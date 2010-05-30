@@ -33,7 +33,7 @@ end
 
 desc "Push a new version to Gemcutter and publish docs."
 task :publish do
-  require File.dirname(__FILE__) + '/lib/mustache/version'
+  require File.dirname(__FILE__) + '/lib/up/version'
 
   system "git tag v#{Up::Version}"
   sh "gem build up.gemspec"
