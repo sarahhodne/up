@@ -1,0 +1,41 @@
+up(1) -- Static web server
+==========================
+
+## SYNOPSIS
+
+    up [OPTIONS] <DIR>
+
+
+## DESCRIPTION
+
+Up is a super-simple static web server that hosts static files.
+It uses Rack::Directory to do this and generates a nice directory
+index if only a directory, not a file is specified.
+
+
+## OPTIONS
+
+  * `-p`, `--port PORT`:
+    Set the port that Up should listen to. The default port is
+    1234.
+
+  * `-o`, `--host HOST`:
+    Set the host/IP that Up should bind to. Default is 0.0.0.0.
+
+
+## INSTALLATION
+
+If you have RubyGems installed:
+
+    gem install up
+
+
+## EXAMPLES
+
+    $ up docs/
+
+
+## COPYRIGHT
+
+Up is Copyright (C) 2010 Henrik Hodne
+
