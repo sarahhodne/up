@@ -1,0 +1,84 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+
+require 'up'
+require 'up/version'
+
+class Up
+  class CLI
+    # Return a structure describing the options.
+    def self.parse_options(args)
+      options = { :port => 1234, :host => '0.0.0.0', :server => 'thin,mongrel,webrick' }
+      opts = OptionParser.new do |opts|
+        opts.banner = "Usage: up [-p PORT] [-o HOST] FILE"
+
+        opts.separator " "
+
+        opts.separator "Examples:"
+        opts.separator "  $ up docs/"
+        opts.separator "  $ up -p 8080 public_html"
+
+        opts.separator " "
+
+        opts.separator "  See up(1) or " +
+          "http://dvyjones.github.com/up/up.1.html"
+        opts.separator "  for more details."
+
+        opts.separator " "
+        opts.separator "Options:"
+
+        opts.on("-p", "--port PORT",
+                "Listen to a given port (default 1234).") do |port|
+          options[:port] = port.to_i
+        end
+
+        opts.on("-o", "--host HOST",
+                "The IP to listen to (default 0.0.0.0).") do |host|
+          options[:host] = host
+        end
+
+        opts.on("-s", "--server SERVER",
+                "The Rack handler to use (default thin,mongrel,webrick).",
+                "Use a comma-separated list") do |server|
+          options[:server] = server
+        end
+
+        opts.separator "Common Options:"
+
+        opts.on("-v", "--version", "Print the version") do |v|
+          puts "Up v#{Up::Version}"
+          exit
+        end
+
+        opts.on_tail("-h", "--help", "Show this message") do
+          puts opts
+          exit
+        end
+      end
+
+      opts.separator ""
+
+      [opts.parse!(args), options]
+    end
+  end
+end
+
+# Help is the default.
+ARGV << '-h' if ARGV.empty? && $stdin.tty?
+
+# Process options
+dir, options = Up::CLI.parse_options(ARGV) if $stdin.tty?
+
+# Now - serve stuff
+begin
+  puts "== Up/#{Up::Version} is starting " +
+    "on #{options[:port]}"
+  handler = Up.detect_rack_handler(options[:server])
+  handler.run(Up::Application.new(dir.first), :Host => options[:host], :Port => options[:port]) do |server|
+    [:INT, :TERM].each { |sig| trap(sig) { Up::Application.quit!(server) } }
+  end
+rescue Errno::EADDRINUSE => e
+  puts "== Port #{options[:port]} is already in use!"
+end
+
