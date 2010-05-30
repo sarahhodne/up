@@ -1,3 +1,4 @@
+require 'sdoc'
 require 'rake/rdoctask'
 
 #
@@ -47,8 +48,28 @@ end
 # Documentation
 #
 
-begin
-  require 'sdoc_helpers'
-rescue LoadError
-  warn "sdoc support not enabled. Please gem install sdoc-helpers."
+Rake::RDocTask.new do |rdoc|
+  rdoc.main = 'README.md'
+  rdoc.rdoc_files = [ 'README.md', 'LICENSE', 'lib' ]
+  rdoc.rdoc_dir = 'docs'
 end
+
+namespace :pages do
+  task :publish => [ :check_dirty, "man:build", :rerdoc ] do
+    `git checkout gh-pages`
+    `ls -1 | grep -v docs | grep -v man | xargs rm -rf`
+    `git add .; git commit -m "update docs"; git push origin gh-pages`
+    `git checkout master`
+    puts :done
+  end
+
+  task :check_dirty do
+    if !`git status`.include?('nothing to commit')
+      abort "dirty index - not publishing!"
+    end
+  end
+end
+
+desc "Build and publish documentation using GitHub Pages."
+task :pages => "pages:publish"
+
