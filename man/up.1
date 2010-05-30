@@ -1,0 +1,56 @@
+.\" generated with Ronn/v0.5
+.\" http://github.com/rtomayko/ronn/
+.
+.TH "UP" "1" "May 2010" "DVYJONES" "Up Manual"
+.
+.SH "NAME"
+\fBup\fR \-\- Static web server
+.
+.SH "SYNOPSIS"
+.
+.nf
+
+up [OPTIONS] <DIR>
+.
+.fi
+.
+.SH "DESCRIPTION"
+Up is a super\-simple static web server that hosts static files.
+It uses Rack::Directory to do this and generates a nice directory
+index if only a directory, not a file is specified.
+.
+.SH "OPTIONS"
+.
+.IP "\(bu" 4
+\fB\-p\fR, \fB\-\-port PORT\fR:
+Set the port that Up should listen to. The default port is
+.
+.IP "\(bu" 4
+\fB\-o\fR, \fB\-\-host HOST\fR:
+Set the host/IP that Up should bind to. Default is 0.0.0.0.
+.
+.IP "" 0
+.
+.SH "INSTALLATION"
+If you have RubyGems installed:
+.
+.IP "" 4
+.
+.nf
+
+gem install up
+.
+.fi
+.
+.IP "" 0
+.
+.SH "EXAMPLES"
+.
+.nf
+
+$ up docs/
+.
+.fi
+.
+.SH "COPYRIGHT"
+Up is Copyright (C) 2010 Henrik Hodne
