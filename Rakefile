@@ -17,7 +17,7 @@ end
 if command? :ronn
   desc "Show the manual"
   task :man => "man:build" do
-    exec "man man/mustache.1"
+    exec "man man/up.1"
   end
 
   desc "Build the manual"
