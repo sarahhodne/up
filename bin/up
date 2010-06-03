@@ -33,7 +33,7 @@ class Up
           options[:port] = port.to_i
         end
 
-        opts.on("-o", "--host HOST",
+        opts.on("-H", "--host HOST",
                 "The IP to listen to (default 0.0.0.0).") do |host|
           options[:host] = host
         end

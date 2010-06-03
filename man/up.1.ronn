@@ -19,7 +19,7 @@ index if only a directory, not a file is specified.
     Set the port that Up should listen to. The default port is
     1234.
 
-  * `-o`, `--host HOST`:
+  * `-H`, `--host HOST`:
     Set the host/IP that Up should bind to. Default is 0.0.0.0.
 
 
